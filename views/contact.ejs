@@ -1,0 +1,54 @@
+<%- include("partials/header") %>
+<div id="contactdiv">
+  <br /><br />
+  <h1 style="font-size: 26px; text-align: center"><b>Let's talk</b></h1>
+  <div style="text-align: center; background-color: white">
+    <form name="contact" action="/contact" style="font-size: 20px;">
+      Name:
+      <input id="plzwork" type="text" value="" name="name" /><br><br>
+      Email ID:
+      <input id="plzwork" type="email" value="" name="email" /><br><br>
+      Message:
+      <input type="textarea" value="Type your message here..." name="msg" /><br><br><br>
+      <input type="submit" value="send" name="submit" onclick="alertbox()" />
+    </form>
+    <script>
+      function alertbox() {
+        var x = document.contact;
+        var dict = {};
+        var keys = ["name","email", "msg"];
+        var arr = [];
+        for (var i = 0; i < x.length - 1; i++) {
+          dict[keys[i]] = x.elements[i].value;
+        }
+        fetch("/contact1", {
+          method: "POST",
+
+          headers: { "Content-Type": "application/json" },
+
+          body: JSON.stringify(dict),
+        }).then((res) => {
+          console.log("Request complete! response:", res);
+        });
+        alert("Thanks! Will get back to you soon");
+      }
+    </script>
+  </div>
+    <br><br><br>
+    <h2 style="font-size: 26px; text-align: center;">Check the message you have sent</h2>
+    <div style="text-align: center; background-color: white;">
+      <form  action="/display" method="post" style="font-size: 20px;">
+      Email ID:
+      <input type="email" value="" name="checkmail" /><br><br>
+      <br>
+      <input type="submit" value="check" name="checksubmit" />
+      </form>
+      <br>
+      <p id="answer"></p>
+      <% if(flag==1){ %>
+        <p class="pfinaldisplay"><%=usermsg%></p>
+      <%  }%> 
+      <br>
+    </div>
+</div>
+<%- include("partials/footer") %>
